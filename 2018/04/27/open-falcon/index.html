@@ -199,7 +199,7 @@
 <a id="more"></a>
 <h3 id="后端安装-docker"><a href="#后端安装-docker" class="headerlink" title="后端安装(docker)"></a>后端安装(docker)</h3><p>/opt/openfalcon/falcon-plus</p>
 <p><a href="https://github.com/open-falcon/falcon-plus/blob/master/docker/README.md" target="_blank" rel="noopener">官方教程</a></p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span># Running falcon-plus container</span><br><span class="line"></span><br><span class="line">    docker pull openfalcon/falcon-plus:0.2.0</span><br><span class="line">    docker run -itd -p 8081:8081 openfalcon/falcon-plus:0.2.0 bash /run.sh hbs</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span># Running falcon-plus container with docker-compose</span><br><span class="line"></span><br><span class="line">    docker-compose -f init.yml up -d falcon-plus</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span># Running mysql and redis container</span><br><span class="line"></span><br><span class="line">    docker-compose -f init.yml up -d mysql redis</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span># Stop and Remove containers</span><br><span class="line"></span><br><span class="line">    docker-compose -f init.yml rm -f</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># Running falcon-plus container</span></span></span><br><span class="line"></span><br><span class="line">    docker pull openfalcon/falcon-plus:0.2.0</span><br><span class="line">    docker run -itd -p 8081:8081 openfalcon/falcon-plus:0.2.0 bash /run.sh hbs</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># Running falcon-plus container with docker-compose</span></span></span><br><span class="line"></span><br><span class="line">    docker-compose -f init.yml up -d falcon-plus</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># Running mysql and redis container</span></span></span><br><span class="line"></span><br><span class="line">    docker-compose -f init.yml up -d mysql redis</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># Stop and Remove containers</span></span></span><br><span class="line"></span><br><span class="line">    docker-compose -f init.yml rm -f</span><br></pre></td></tr></table></figure>
 <p>init.yml</p>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">'2'</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line"><span class="attr">  mysql:</span></span><br><span class="line"><span class="attr">    environment:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">MYSQL_ROOT_PASSWORD=password</span></span><br><span class="line"><span class="attr">    extends:</span></span><br><span class="line"><span class="attr">      file:</span> <span class="string">common.yml</span></span><br><span class="line"><span class="attr">      service:</span> <span class="string">template</span></span><br><span class="line"><span class="attr">    hostname:</span> <span class="string">docker-mysql</span></span><br><span class="line"><span class="attr">    image:</span> <span class="attr">mysql:5.7</span></span><br><span class="line"><span class="attr">    labels:</span></span><br><span class="line"><span class="attr">      owl:</span> <span class="string">mysql</span></span><br><span class="line"><span class="attr">    ports:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="number">3306</span><span class="string">:3306</span></span><br><span class="line"><span class="attr">    restart:</span> <span class="string">always</span></span><br><span class="line"><span class="attr">    volumes:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">../scripts/mysql/db_schema:/docker-entrypoint-initdb.d</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">./mysql.cnf:/etc/mysql/conf.d/mysql.cnf:ro</span></span><br><span class="line"><span class="attr">  redis:</span></span><br><span class="line"><span class="attr">    command:</span> <span class="string">redis-server</span> <span class="string">/redis.conf</span></span><br><span class="line"><span class="attr">    extends:</span></span><br><span class="line"><span class="attr">      file:</span> <span class="string">common.yml</span></span><br><span class="line"><span class="attr">      service:</span> <span class="string">template-backend</span></span><br><span class="line"><span class="attr">    hostname:</span> <span class="string">docker-redis</span></span><br><span class="line"><span class="attr">    image:</span> <span class="attr">redis:3.0</span></span><br><span class="line"><span class="attr">    labels:</span></span><br><span class="line"><span class="attr">      owl:</span> <span class="string">redis</span></span><br><span class="line"><span class="attr">    ports:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="number">6379</span><span class="string">:6379</span></span><br><span class="line"><span class="attr">    restart:</span> <span class="string">always</span></span><br><span class="line"><span class="attr">    volumes:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">./redis.conf:/redis.conf</span></span><br><span class="line"><span class="attr">  falcon-plus:</span></span><br><span class="line"><span class="attr">    command:</span> <span class="string">bash</span> <span class="string">/run.sh</span> <span class="string">hbs</span></span><br><span class="line"><span class="attr">    image:</span> <span class="string">openfalcon/falcon-plus:0.2.0</span></span><br><span class="line"><span class="attr">    ports:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="number">8081</span><span class="string">:8081</span></span><br><span class="line"><span class="attr">    restart:</span> <span class="string">always</span></span><br></pre></td></tr></table></figure>
 <p><strong>注意</strong>  需要打包mysql初始化脚本到这个路径下<figure class="highlight plain"><figcaption><span>，具体文件[在这里](https://github.com/open-falcon/falcon-plus/tree/master/scripts/mysql/db_schema)</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">mysql登陆</span><br></pre></td></tr></table></figure></p>
@@ -504,6 +504,18 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">Docker Swarm</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">Service</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">HA</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Elasticsearch</a>
               </li>
              
@@ -536,10 +548,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Prometheus</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Python</a>
               </li>
              
@@ -564,19 +572,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Prometheus</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">Zookeeper</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">Docker Swarm</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">HA</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">Service</a>
               </li>
             
             <div class="clearfix"></div>

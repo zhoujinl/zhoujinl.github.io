@@ -6,12 +6,12 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://zhoujinl.github.io">
-  <title>Docker Swarm管理节点高可用分析 | Jalon&#39;Blog</title>
+  <title>Docker Swarm服务调度分析 | Jalon&#39;Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="本文主要介绍docker swarm 对于容器应用的调度管理分析。Docker swarm 1.12.0  是一个非常重要的版本，1.12.0之前的版本 docker swarm 是一个独立的项目，需要额外下载swarm镜像进行安装。1.12.0  之后的版本，swarm功能直接继承到docker engine 当中。直接使用docker CLI 可创建一个swarm 集群、可在swarm 集群中">
 <meta name="keywords" content="Docker Swarm,Service">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Docker Swarm管理节点高可用分析">
+<meta property="og:title" content="Docker Swarm服务调度分析">
 <meta property="og:url" content="http://zhoujinl.github.io/2018/10/20/docker-swarm-scheduler/index.html">
 <meta property="og:site_name" content="Jalon&#39;Blog">
 <meta property="og:description" content="本文主要介绍docker swarm 对于容器应用的调度管理分析。Docker swarm 1.12.0  是一个非常重要的版本，1.12.0之前的版本 docker swarm 是一个独立的项目，需要额外下载swarm镜像进行安装。1.12.0  之后的版本，swarm功能直接继承到docker engine 当中。直接使用docker CLI 可创建一个swarm 集群、可在swarm 集群中">
@@ -35,9 +35,9 @@
 <meta property="og:image" content="http://zhoujinl.github.io/2018/10/20/docker-swarm-scheduler/docker-swarm-replicated-vs-global.png">
 <meta property="og:image" content="http://zhoujinl.github.io/2018/10/20/docker-swarm-scheduler/swarm-web.png">
 <meta property="og:image" content="http://zhoujinl.github.io/2018/10/20/docker-swarm-scheduler/healthcheck.png">
-<meta property="og:updated_time" content="2018-10-20T08:37:27.963Z">
+<meta property="og:updated_time" content="2018-10-20T08:39:42.670Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Docker Swarm管理节点高可用分析">
+<meta name="twitter:title" content="Docker Swarm服务调度分析">
 <meta name="twitter:description" content="本文主要介绍docker swarm 对于容器应用的调度管理分析。Docker swarm 1.12.0  是一个非常重要的版本，1.12.0之前的版本 docker swarm 是一个独立的项目，需要额外下载swarm镜像进行安装。1.12.0  之后的版本，swarm功能直接继承到docker engine 当中。直接使用docker CLI 可创建一个swarm 集群、可在swarm 集群中">
 <meta name="twitter:image" content="http://zhoujinl.github.io/img/swarm-node.png">
   
@@ -188,7 +188,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Docker Swarm管理节点高可用分析
+      Docker Swarm服务调度分析
     </h1>
   
 
@@ -206,6 +206,7 @@
 <h1 id="1-Docker-Swarm-集群架构"><a href="#1-Docker-Swarm-集群架构" class="headerlink" title="1.Docker Swarm 集群架构"></a>1.Docker Swarm 集群架构</h1><p>Swarm 集群中，有两种类型的节点：Manager和Worker。</p>
 <p>要部署服务到swarm，需要将服务定义提交给Manager节点。Manager节点将称为work的工作单元分派 给Worker节点。</p>
 <p><img src="\img\swarm-node.png" alt=""></p>
+<a id="more"></a>
 <h2 id="1-1-Manager-Node"><a href="#1-1-Manager-Node" class="headerlink" title="1.1 Manager Node"></a>1.1 Manager Node</h2><p>Manager节点处理集群管理任务：</p>
 <ul>
 <li>维护集群状态</li>
@@ -967,6 +968,18 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">Docker Swarm</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">Service</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">HA</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Elasticsearch</a>
               </li>
              
@@ -999,10 +1012,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Prometheus</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Python</a>
               </li>
              
@@ -1027,19 +1036,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Prometheus</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">Zookeeper</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">Docker Swarm</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">HA</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">Service</a>
               </li>
             
             <div class="clearfix"></div>

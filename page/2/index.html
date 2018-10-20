@@ -278,7 +278,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>joel Spolsky著 阮一峰译<br><a href="https://wizardforcel.gitbooks.io/joel-on-software/content/index.html" title="软件随想录" target="_blank" rel="external">Gitbook 电子书</a></p>
+        <p>joel Spolsky著 阮一峰译<br><a href="https://wizardforcel.gitbooks.io/joel-on-software/content/index.html" title="软件随想录" target="_blank" rel="noopener">Gitbook 电子书</a></p>
 <h1 id="寻找优秀程序员的三种办法"><a href="#寻找优秀程序员的三种办法" class="headerlink" title="寻找优秀程序员的三种办法"></a>寻找优秀程序员的三种办法</h1><blockquote>
 <p>社招(简历)不靠谱，员工推荐不太靠谱<br>走出去，参加开发者大会<br>找实习生。<br>创造自己的知名社区网站。</p>
 </blockquote>
@@ -359,9 +359,9 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>假如新建了一台CentOs虚拟机，作为纯净的操作系统，我们需要搭建基本的开发环境。CentOs6.x一般都是java1.5版本，python2.6，并且很多开发工具都是没有默认安装的，比如gcc。下面重点介绍Python环境的搭建，主要涉及Python升级，pip安装，virtualenv安装。</p>
-<h1 id="yum"><a href="#yum" class="headerlink" title="yum"></a>yum</h1><p>yum 源更新，可选操作，可替换国内的yum源。<br>yum groupinstall 。必选操作，编译python需要编译工具。还有一些必要的库文件需要安装，例如openssl,zlib,这些都需要额外安装。pip要安装python2.7版本，因此需要zlib需要更新到最新版本1.2.8，而CentOs默认是1.2.3。否则会报错，错误信息后面提示。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@jinqiu opt]# yum -y update</div><div class="line">[root@jinqiu opt]# yum groupinstall &quot;Development tools&quot;</div><div class="line">[root@jinqiu opt]# yum install zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel</div></pre></td></tr></table></figure></p>
-<p>顺便简单提下，快速免验证安装jdk<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">1. wget --no-check-certificate --no-cookies --header &quot;Cookie: oraclelicense=accept-securebackup-cookie&quot; http://download.oracle.com/otn-pub/java/jdk/8u131-b11/d54c1d3a095b4ff2b6607d096fa80163/jdk-8u131-linux-x64.rpm  </div><div class="line">2. rpm -ivh jdk-8u131-linux-x64.rpm</div></pre></td></tr></table></figure></p>
-<h1 id="python"><a href="#python" class="headerlink" title="python"></a>python</h1><p>保存2.6版本的python<br>下载2.7版本的python源码文件，解压，然后配置，编译，安装<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">[root@jinqiu~]$ cd /opt</div><div class="line">[root@jinqiuopt]$ sudo wget --no-check-certificate https://www.python.org/ftp/python/2.7.6/Python-2.7.6.tar.xz</div><div class="line">[root@jinqiuopt]$ sudo tar xf Python-2.7.6.tar.xz </div><div class="line">[root@jinqiuopt]$ cd Python-2.7.6</div><div class="line">[root@jinqiuPython-2.7.6]$ sudo ./configure --prefix=/usr/local</div><div class="line">[root@jinqiuPython-2.7.6]$ sudo make &amp;&amp; sudo make altinstall</div></pre></td></tr></table></figure></p>
+<h1 id="yum"><a href="#yum" class="headerlink" title="yum"></a>yum</h1><p>yum 源更新，可选操作，可替换国内的yum源。<br>yum groupinstall 。必选操作，编译python需要编译工具。还有一些必要的库文件需要安装，例如openssl,zlib,这些都需要额外安装。pip要安装python2.7版本，因此需要zlib需要更新到最新版本1.2.8，而CentOs默认是1.2.3。否则会报错，错误信息后面提示。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@jinqiu opt]# yum -y update</span><br><span class="line">[root@jinqiu opt]# yum groupinstall &quot;Development tools&quot;</span><br><span class="line">[root@jinqiu opt]# yum install zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel</span><br></pre></td></tr></table></figure></p>
+<p>顺便简单提下，快速免验证安装jdk<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1. wget --no-check-certificate --no-cookies --header &quot;Cookie: oraclelicense=accept-securebackup-cookie&quot; http://download.oracle.com/otn-pub/java/jdk/8u131-b11/d54c1d3a095b4ff2b6607d096fa80163/jdk-8u131-linux-x64.rpm  </span><br><span class="line">2. rpm -ivh jdk-8u131-linux-x64.rpm</span><br></pre></td></tr></table></figure></p>
+<h1 id="python"><a href="#python" class="headerlink" title="python"></a>python</h1><p>保存2.6版本的python<br>下载2.7版本的python源码文件，解压，然后配置，编译，安装<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@jinqiu~]$ cd /opt</span><br><span class="line">[root@jinqiuopt]$ sudo wget --no-check-certificate https://www.python.org/ftp/python/2.7.6/Python-2.7.6.tar.xz</span><br><span class="line">[root@jinqiuopt]$ sudo tar xf Python-2.7.6.tar.xz </span><br><span class="line">[root@jinqiuopt]$ cd Python-2.7.6</span><br><span class="line">[root@jinqiuPython-2.7.6]$ sudo ./configure --prefix=/usr/local</span><br><span class="line">[root@jinqiuPython-2.7.6]$ sudo make &amp;&amp; sudo make altinstall</span><br></pre></td></tr></table></figure></p>
         
           <a class="article-more-a" href="/2016/08/19/python-build/#more">more >></a>
         
@@ -448,7 +448,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>joel Spolsky著  杨帆译<br><a href="https://wizardforcel.gitbooks.io/joel-on-software/content/index.html" title="软件随想录" target="_blank" rel="external">Gitbook 电子书</a></p>
+        <p>joel Spolsky著  杨帆译<br><a href="https://wizardforcel.gitbooks.io/joel-on-software/content/index.html" title="软件随想录" target="_blank" rel="noopener">Gitbook 电子书</a></p>
 <h1 id="开发人员的管理"><a href="#开发人员的管理" class="headerlink" title="开发人员的管理"></a>开发人员的管理</h1><ul>
 <li>面试游击指南<br>面试官有时候会故意刁难你，看你能否坚持自己的正确的观点。好的面试者会坚持自己的观点，然后试图说服面试官。</li>
 <li>重金激励害多利少<br>原因是绩效考核的不正确，负面评价对士气伤害很大，而正面评价对士气的激励也不如想象的那么好(会让他们觉得自己是为了拿到好成绩才好好工作的，就像巴普洛夫的狗)。<br>大多数人都认为自己把事情做得很好(即使不是)。评价机制的不合理：比如某人是团队的粘合剂，总是能够在士气低落的时候激励大家，某人总喜欢研究新技术，别人有问题总要靠他解决，但是他写的代码量很少，这两种人可能得到的评价很低，但是不可否认他们的作用很大。<br>绩效考评会使团队产生间隙。</li>
@@ -529,7 +529,7 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p><img src="/img/google.jpg" alt="Google Img"></p>
-<h1 id="下载离线包"><a href="#下载离线包" class="headerlink" title="下载离线包"></a>下载离线包</h1><p>通过该链接下载离线下载最新的chrome官方离线安装包<br><a href="https://www.google.com/intl/zh-CN/chrome/browser/desktop/index.html?standalone=1" title="离线下载" target="_blank" rel="external">Download Url</a>  </p>
+<h1 id="下载离线包"><a href="#下载离线包" class="headerlink" title="下载离线包"></a>下载离线包</h1><p>通过该链接下载离线下载最新的chrome官方离线安装包<br><a href="https://www.google.com/intl/zh-CN/chrome/browser/desktop/index.html?standalone=1" title="离线下载" target="_blank" rel="noopener">Download Url</a>  </p>
 <h1 id="常用插件"><a href="#常用插件" class="headerlink" title="常用插件"></a>常用插件</h1><blockquote>
 <p>Adblock Plus  ：广告过滤<br>Appspector ： Detect web applications and javascript libraries run on browsing website.<br>crxMouse Chrome Gestures ：鼠标手势<br>Humble New Tab Page ：书签管理、最常访问、最近关闭等<br>IE Tab：IE内核打开网页<br>SwitchyOmega ：代理工具<br>LastPass： Free Password Manager 密码管理器<br>Octotree ：Code tree for GitHub and GitLab<br>OneTab ：节省高达95％的内存，并减轻标签页混乱现象<br>Axure RP Extension for Chrome ： Axure RP 浏览器插件</p>
 </blockquote>
@@ -611,7 +611,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>joel Spolsky著  杨帆译<br><a href="https://wizardforcel.gitbooks.io/joel-on-software/content/index.html" title="软件随想录" target="_blank" rel="external">Gitbook 电子书</a></p>
+        <p>joel Spolsky著  杨帆译<br><a href="https://wizardforcel.gitbooks.io/joel-on-software/content/index.html" title="软件随想录" target="_blank" rel="noopener">Gitbook 电子书</a></p>
 <h1 id="软件开发的五个世界"><a href="#软件开发的五个世界" class="headerlink" title="软件开发的五个世界"></a>软件开发的五个世界</h1><p>了解你的世界 </p>
 <blockquote>
 <p>1.盒装(Shrinkwrap)软件（产品软件）<br>2.内部用的软件<br>3.嵌入式软件<br>4.游戏软件<br>5.用后即丢的软件</p>
@@ -1146,6 +1146,18 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">Docker Swarm</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">Service</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">HA</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Elasticsearch</a>
               </li>
              
@@ -1178,10 +1190,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Prometheus</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Python</a>
               </li>
              
@@ -1206,19 +1214,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Prometheus</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">Zookeeper</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">Docker Swarm</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">HA</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">Service</a>
               </li>
             
             <div class="clearfix"></div>
