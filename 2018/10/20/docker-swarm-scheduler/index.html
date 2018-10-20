@@ -30,12 +30,12 @@
 <meta property="og:image" content="http://zhoujinl.github.io/2018/10/20/docker-swarm-scheduler/storage-provider-1.png">
 <meta property="og:image" content="http://zhoujinl.github.io/2018/10/20/docker-swarm-scheduler/storage-provider-2.png">
 <meta property="og:image" content="http://zhoujinl.github.io/2018/10/20/docker-swarm-scheduler/Docker-Volume-Plugin-Architecture.png">
-<meta property="og:image" content="http://zhoujinl.github.io/2018/10/20/docker-swarm-scheduler/services-diagram.png">
-<meta property="og:image" content="http://zhoujinl.github.io/2018/10/20/docker-swarm-scheduler/swarm-service-lifecycle.png">
-<meta property="og:image" content="http://zhoujinl.github.io/2018/10/20/docker-swarm-scheduler/docker-swarm-replicated-vs-global.png">
-<meta property="og:image" content="http://zhoujinl.github.io/2018/10/20/docker-swarm-scheduler/swarm-web.png">
+<meta property="og:image" content="http://zhoujinl.github.io/img/services-diagram.png">
+<meta property="og:image" content="http://zhoujinl.github.io/img/swarm-service-lifecycle.png">
+<meta property="og:image" content="http://zhoujinl.github.io/img/docker-swarm-replicated-vs-global.png">
+<meta property="og:image" content="http://zhoujinl.github.io/img/swarm-web.png">
 <meta property="og:image" content="http://zhoujinl.github.io/2018/10/20/docker-swarm-scheduler/healthcheck.png">
-<meta property="og:updated_time" content="2018-10-20T08:39:42.670Z">
+<meta property="og:updated_time" content="2018-10-20T08:51:20.670Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Docker Swarm服务调度分析">
 <meta name="twitter:description" content="本文主要介绍docker swarm 对于容器应用的调度管理分析。Docker swarm 1.12.0  是一个非常重要的版本，1.12.0之前的版本 docker swarm 是一个独立的项目，需要额外下载swarm镜像进行安装。1.12.0  之后的版本，swarm功能直接继承到docker engine 当中。直接使用docker CLI 可创建一个swarm 集群、可在swarm 集群中">
@@ -483,13 +483,13 @@
 <p>docker-swarm.yml中定义了服务所需要达到的状态。我们不需要告诉swarm如何做，我们只需要告诉swarm 我们想要的服务状态是什么，swarm最终会帮我们达到这个状态。</p>
 <p>swarm管理器将服务定义为服务的所需状态。swarm将群中节点上的服务调度为一个或多个副本任务。任务在群集中的节点上彼此独立地运行。</p>
 <p>例如，想要在HTTP侦听器的三个实例之间进行负载平衡。下图显示了具有三个副本的HTTP侦听器服务。监听器的三个实例中的每一个都是集群中的任务。容器是一个孤立的过程。在swarm模式模型中，每个任务只调用一个容器。任务类似于调度程序放置容器的“槽”。容器生效后，调度程序会识别该任务处于运行状态。如果容器未通过运行状况检查或终止，则任务将终止。</p>
-<p><img src="./services-diagram.png" alt=""></p>
+<p><img src="\img/services-diagram.png" alt=""></p>
 <p>Services，Tasks 和 Containers 之间的关系可以用上面这张图来描述。来看这张图的逻辑，表示用户想要通过 Manager 节点部署一个有 3 个副本的 Nginx 的 Service，Manager 节点接收到用户的 Service definition 后，便开始对该 Service 进行调度，将会在当前可用的Worker（或者Manager ）节点中启动相应的 Tasks 以及相关的副本；所以可以看到，Service 实际上是 Task 的定义，而 Task 则是执行在节点上的程序。</p>
 <p>Task 是什么呢？其实就是一个 Container，只是，在 Swarm 中，每个 Task 都有自己的名字和编号，如图，比如 nginx.1、nginx.2 和 nginx.3，这些 Container 各自运行在各自的 node 上，当然，一个 node 上可以运行多个 Container；</p>
 <h2 id="4-2-任务调度"><a href="#4-2-任务调度" class="headerlink" title="4.2 任务调度"></a>4.2 任务调度</h2><p>任务是swarm集群内调度的原子单位。在创建或更新服务时，声明定义服务状态，协调器通过调度任务来实现所需的状态。例如上例的服务，该服务指示协调器始终保持三个HTTP侦听器实例的运行。协调器通过创建三个任务来响应。每个任务都是调度程序通过生成容器来填充的插槽。容器是任务的实例化。如果HTTP侦听器任务随后未通过其运行状况检查或崩溃，则协调器会创建一个新的副本任务，该任务会生成一个新容器。</p>
 <p>任务是单向机制。它通过一系列状态单调进行：已分配，准备，运行等。如果任务失败，则协调器将删除任务及其容器，然后根据服务指定的所需状态创建新任务以替换它。</p>
 <p>Docker swarm mode 模式的底层技术实际上就是指的是调度器( scheduler )和编排器( orchestrator )；下面这张图展示了 Swarm mode 如何从一个 Service 的创建请求并且成功将该 Service 分发到 worker 节点上执行的过程。</p>
-<p><img src=".\swarm-service-lifecycle.png" alt=""></p>
+<p><img src="\img\swarm-service-lifecycle.png" alt=""></p>
 <ul>
 <li>首先，看上半部分Swarm manager <ol>
 <li>用户通过 Docker Engine Client 使用命令 docker service create 提交 Service definition，</li>
@@ -580,7 +580,7 @@
 <p>上面的例子都表明一个事实，就是你期望的执行条件与 Swarm 现有的可用资源的情况不匹配，不吻合，因此，作为 Swarm 的管理者，应该考虑对 Swarm 集群整体进行扩容；</p>
 <h2 id="4-4-服务副本与全局服务"><a href="#4-4-服务副本与全局服务" class="headerlink" title="4.4 服务副本与全局服务"></a>4.4 服务副本与全局服务</h2><p>Docker Swarm 有两种类型的服务部署模式：复制和全局。</p>
 <p>Swarm通过<code>--mode</code>选项设置服务类型，提供了两种模式：一种是replicated，我们可以指定服务Task的个数（也就是需要创建几个冗余副本），这也是Swarm默认使用的服务类型；另一种是global，这样会在Swarm集群的每个Node上都创建一个服务。如下图所示（出自Docker官网），是一个包含replicated和global模式的Swarm集群： </p>
-<p><img src=".\docker-swarm-replicated-vs-global.png" alt=""></p>
+<p><img src="\img\docker-swarm-replicated-vs-global.png" alt=""></p>
 <p>上图中，黄色表示的replicated模式下的Service Replicas，灰色表示global模式下Service的分布。 </p>
 <p>在Swarm mode下使用Docker，可以实现部署运行服务、服务扩容缩容、删除服务、滚动更新等功能。</p>
 <h2 id="4-5-调度策略"><a href="#4-5-调度策略" class="headerlink" title="4.5 调度策略"></a>4.5 调度策略</h2><p>Swarm提供了几种不同的方法来控制服务任务可以在哪些节点上运行。</p>
@@ -609,7 +609,7 @@
 <p>可以看到 swarm01 上面运行了1个容器，swarm03上面运行了2个，而swarm02上面一个容器都没有，这是咋回事呢？哦，原来我们在创建集群过程中，对swarm02 做了状态变更的操作，将其设置为不运行任务。<code>docker node update  --availability drain  swarm02</code>. 查看集群状态。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@swarm01 swarm]# docker node ls</span><br><span class="line">ID                            HOSTNAME            STATUS              AVAILABILITY        MANAGER STATUS      ENGINE VERSION</span><br><span class="line">epoic1y0vv830vnwbc6nnacjc *   swarm01             Ready               Active              Leader              18.03.1-ce</span><br><span class="line">nsqqv181e0r7mu77azixtqhzl     swarm02             Ready               Drain               Reachable           18.03.1-ce</span><br><span class="line">mkkxaeqergz8xw21bbkd47q1c     swarm03             Ready               Active              Reachable           18.03.1-ce</span><br></pre></td></tr></table></figure>
 <p>此时打开浏览器，输入HTTP URL。任意swarm集群节点都可以访问httpd服务。</p>
-<p><img src=".\swarm-web.png" alt=""></p>
+<p><img src="\img\swarm-web.png" alt=""></p>
 <p>需要说明的是，由于3个节点的/var/www/html 路径未做共享存储。因此swarm会随机显示一个swarm节点的网页内容。</p>
 <h3 id="4-6-3-服务扩缩容"><a href="#4-6-3-服务扩缩容" class="headerlink" title="4.6.3 服务扩缩容"></a>4.6.3 服务扩缩容</h3><p>修改docker-swarm.yml 配置字段 <code>replicas: 5</code> ，将容器个数提升到5个。由于实验环境资源有限，因此这里将swarm02状态变更为可以状态，用以分配容器。</p>
 <p><code>docker node update  --availability active swarm02</code>.</p>
@@ -960,11 +960,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">随笔</a>
+                <a href="javascript:void(0)" class="js-tag color2">Google</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Google</a>
+                <a href="javascript:void(0)" class="js-tag color3">随笔</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -973,10 +973,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">Service</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">HA</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1016,6 +1012,18 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Prometheus</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Sensu</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Ruby</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">TICK</a>
               </li>
              
@@ -1028,19 +1036,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Sensu</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Ruby</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Prometheus</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">Zookeeper</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">HA</a>
               </li>
             
             <div class="clearfix"></div>
