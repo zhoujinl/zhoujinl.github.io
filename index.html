@@ -161,101 +161,6 @@
           <div id="js-content" class="content-ll">
             
   
-    <article id="post-docker-swarm-scheduler" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/10/20/docker-swarm-scheduler/">Docker Swarm服务调度分析</a>
-    </h1>
-  
-
-        
-        <a href="/2018/10/20/docker-swarm-scheduler/" class="archive-article-date">
-  	<time datetime="2018-10-20T08:37:53.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-10-20</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>本文主要介绍docker swarm 对于容器应用的调度管理分析。Docker swarm 1.12.0  是一个非常重要的版本，1.12.0之前的版本 docker swarm 是一个独立的项目，需要额外下载swarm镜像进行安装。1.12.0  之后的版本，swarm功能直接继承到docker engine 当中。直接使用docker CLI 可创建一个swarm 集群、可在swarm 集群中部署应用程序，同时具备管理能力。 </p>
-<p>关于swarm的详细介绍，可参考官方文档：<a href="https://docs.docker.com/engine/swarm/" target="_blank" rel="noopener">https://docs.docker.com/engine/swarm/</a></p>
-<h1 id="1-Docker-Swarm-集群架构"><a href="#1-Docker-Swarm-集群架构" class="headerlink" title="1.Docker Swarm 集群架构"></a>1.Docker Swarm 集群架构</h1><p>Swarm 集群中，有两种类型的节点：Manager和Worker。</p>
-<p>要部署服务到swarm，需要将服务定义提交给Manager节点。Manager节点将称为work的工作单元分派 给Worker节点。</p>
-<p><img src="\img\swarm-node.png" alt=""></p>
-        
-          <a class="article-more-a" href="/2018/10/20/docker-swarm-scheduler/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Docker Swarm</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Service</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/技术/" class="article-tag-list-link color3">技术</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/10/20/docker-swarm-scheduler/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
     <article id="post-docker-swarm-manager-ha" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
   <div class="article-inner">
     
@@ -322,6 +227,101 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2018/10/19/docker-swarm-manager-ha/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-docker-swarm-scheduler" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/09/20/docker-swarm-scheduler/">Docker Swarm服务调度分析</a>
+    </h1>
+  
+
+        
+        <a href="/2018/09/20/docker-swarm-scheduler/" class="archive-article-date">
+  	<time datetime="2018-09-20T08:37:53.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-09-20</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>本文主要介绍docker swarm 对于容器应用的调度管理分析。Docker swarm 1.12.0  是一个非常重要的版本，1.12.0之前的版本 docker swarm 是一个独立的项目，需要额外下载swarm镜像进行安装。1.12.0  之后的版本，swarm功能直接继承到docker engine 当中。直接使用docker CLI 可创建一个swarm 集群、可在swarm 集群中部署应用程序，同时具备管理能力。 </p>
+<p>关于swarm的详细介绍，可参考官方文档：<a href="https://docs.docker.com/engine/swarm/" target="_blank" rel="noopener">https://docs.docker.com/engine/swarm/</a></p>
+<h1 id="1-Docker-Swarm-集群架构"><a href="#1-Docker-Swarm-集群架构" class="headerlink" title="1.Docker Swarm 集群架构"></a>1.Docker Swarm 集群架构</h1><p>Swarm 集群中，有两种类型的节点：Manager和Worker。</p>
+<p>要部署服务到swarm，需要将服务定义提交给Manager节点。Manager节点将称为work的工作单元分派 给Worker节点。</p>
+<p><img src="\img\swarm-node.png" alt=""></p>
+        
+          <a class="article-more-a" href="/2018/09/20/docker-swarm-scheduler/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Docker Swarm</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Service</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/技术/" class="article-tag-list-link color3">技术</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/09/20/docker-swarm-scheduler/">展开全文 >></a>
         </p>
       
 
@@ -1300,14 +1300,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Elasticsearch</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">Monitor</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">Docker Swarm</a>
               </li>
              
@@ -1316,15 +1308,23 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">Service</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Elasticsearch</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">Monitor</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Git</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">GitHub</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">Service</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1344,19 +1344,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Prometheus</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Python</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Sensu</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">Ruby</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Python</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1373,6 +1369,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">Zookeeper</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Prometheus</a>
               </li>
             
             <div class="clearfix"></div>
