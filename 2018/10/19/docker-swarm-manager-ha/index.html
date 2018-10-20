@@ -30,9 +30,9 @@
 <meta property="og:image" content="http://zhoujinl.github.io/img/swarm-service-lifecycle.png">
 <meta property="og:image" content="http://zhoujinl.github.io/img/docker-swarm-replicated-vs-global.png">
 <meta property="og:image" content="c:/Users/jalon/OneDrive/01笔记/Docker/swarm-web.png">
-<meta property="og:image" content="c:/Users/jalon/OneDrive/01笔记/Docker/swarm-network.png">
-<meta property="og:image" content="c:/Users/jalon/OneDrive/01笔记/Docker/swarm-network-2.png">
-<meta property="og:updated_time" content="2018-10-20T08:48:03.076Z">
+<meta property="og:image" content="http://zhoujinl.github.io/img/swarm-network.png">
+<meta property="og:image" content="http://zhoujinl.github.io/img/swarm-network-2.png">
+<meta property="og:updated_time" content="2018-10-20T08:55:37.662Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Docker Swarm管理节点高可用分析">
 <meta name="twitter:description" content="1.简介1.1 swarm是什么Swarm 是使用 SwarmKit 构建的 Docker 引擎内置（原生）的集群管理和编排工具。其主要作用是把若干台Docker主机抽象为一个整体，并且通过一个入口统一管理这些Docker主机上的各种Docker资源。Swarm和Kubernetes比较类似，但是更加轻量，具有的功能也较kubernetes更少一些。 Docker v1.12 是一个非常重要的版本">
@@ -542,13 +542,13 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[root@swarm01 httpd]# docker node ls</span><br><span class="line">ID                            HOSTNAME            STATUS              AVAILABILITY        MANAGER STATUS      ENGINE VERSION</span><br><span class="line">wk8jaypu23vr63082arpsl4ut *   swarm01             Ready               Active              Leader              18.03.1-ce</span><br><span class="line">q9lcw91vus73wyly174iy72h3     swarm02             Down                Active              Unreachable         18.03.1-ce</span><br><span class="line">1xelzfyr5kbn7kk70le45anei     swarm03             Ready               Active              Reachable           18.06.1-ce</span><br><span class="line">[root@swarm01 httpd]# docker service ps hd_hd-1</span><br><span class="line">ID                  NAME                IMAGE               NODE                DESIRED STATE       CURRENT STATE           ERROR               PORTS</span><br><span class="line">t604bqtcj588        hd_hd-1.1           httpd:latest        swarm01             Running             Running 2 minutes ago</span><br><span class="line">xfajbfz51nd9         \_ hd_hd-1.1       httpd:latest        swarm02             Shutdown            Running 8 minutes ago</span><br><span class="line">8clt10jl1xyf        hd_hd-1.2           httpd:latest        swarm01             Running             Running 6 minutes ago</span><br><span class="line">py5cavsog5mo        hd_hd-1.3           httpd:latest        swarm03             Running             Running 7 minutes ago</span><br><span class="line">oigopryy1kro        hd_hd-1.4           httpd:latest        swarm03             Running             Running 7 minutes ago</span><br></pre></td></tr></table></figure>
 <p>我们可以发现，集群认为swarm02现在已经失联（不论是宕机还是网络端开）。现在swarm02上面的容器被迁移到swarm01上面（调度策略应该是swarm01上面目前运行的容器个数比swarm03少）。</p>
 <p>通过虚拟机控制台登陆swarm02，验证集群功能和容器是否在运行</p>
-<p><img src="C:\Users\jalon\OneDrive\01笔记\Docker\swarm-network.png" alt="1537414250767"></p>
+<p><img src="\img\swarm-network.png" alt="1537414250767"></p>
 <p>我们可以发现，swarm02由于当前是一个节点，根据raft算法，处于swarm集群功能不可用状态。docker ps查看容器，发现容器仍然在正常运行。得出结论，swarm集群功能失效，但是不影响原先已经运行的docker容器。</p>
 <p>综合swarm01/swarm03上面的容器个数和swarm02上面的容器个数，现在已经有5个容器了。而我们预设的容器个数是4个。那么当swarm02重新加入集群，会发生什么事情呢？</p>
 <h3 id="4-4-3-网络故障恢复"><a href="#4-4-3-网络故障恢复" class="headerlink" title="4.4.3 网络故障恢复"></a>4.4.3 网络故障恢复</h3><p>把swarm02网卡重新接上。swarm02 会自动加入集群。查看集群信息和服务信息。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[root@swarm01 httpd]# docker node ls</span><br><span class="line">ID                            HOSTNAME            STATUS              AVAILABILITY        MANAGER STATUS      ENGINE VERSION</span><br><span class="line">lkivi02vx5z939z0x7lacuarl *   swarm01             Ready               Active              Leader              18.03.1-ce</span><br><span class="line">pdp0awtf34o4x60x812h07a6e     swarm02             Ready               Active              Reachable           18.03.1-ce</span><br><span class="line">qavrh9e6pjdq2aoxpucl6nohm     swarm03             Ready               Active              Reachable           18.06.1-ce</span><br><span class="line">[root@swarm01 httpd]# docker service ps hd_hd-1</span><br><span class="line">ID                  NAME                IMAGE               NODE                DESIRED STATE       CURRENT STATE            ERROR               PORTS</span><br><span class="line">pepxi7bmzi8r        hd_hd-1.1           httpd:latest        swarm01             Running             Running 2 minutes ago</span><br><span class="line">yf42dr6fqvl5         \_ hd_hd-1.1       httpd:latest        swarm02             Shutdown            Shutdown 2 minutes ago</span><br><span class="line">j6iq7tpsnwb0        hd_hd-1.2           httpd:latest        swarm03             Running             Running 2 minutes ago</span><br><span class="line">k23a3ezbocit        hd_hd-1.3           httpd:latest        swarm03             Running             Running 2 minutes ago</span><br><span class="line">bqra1k9m0ojc        hd_hd-1.4           httpd:latest        swarm01             Running             Running 2 minutes ago</span><br></pre></td></tr></table></figure>
 <p>我们发现swarm02已经正常加入集群。登陆swarm02，查看swarm02上面原先的容器也已经停掉了。符合我们的预期。</p>
-<p><img src="C:\Users\jalon\OneDrive\01笔记\Docker\swarm-network-2.png" alt="1537419010126"></p>
+<p><img src="\img\swarm-network-2.png" alt="1537419010126"></p>
 <h1 id="5-附录"><a href="#5-附录" class="headerlink" title="5.附录"></a>5.附录</h1><h2 id="5-1参考文章："><a href="#5-1参考文章：" class="headerlink" title="5.1参考文章："></a>5.1参考文章：</h2><p>docker swarm介绍：</p>
 <p><a href="http://shiyanjun.cn/archives/1625.html" target="_blank" rel="noopener">http://shiyanjun.cn/archives/1625.html</a></p>
 <p><a href="https://jiayi.space/post/docker-swarmrong-qi-ji-qun-guan-li-gong-ju" target="_blank" rel="noopener">https://jiayi.space/post/docker-swarmrong-qi-ji-qun-guan-li-gong-ju</a></p>
@@ -861,19 +861,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Google</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">随笔</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">Docker Swarm</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">Service</a>
+                <a href="javascript:void(0)" class="js-tag color2">Google</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -885,11 +877,23 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">Docker Swarm</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">HA</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Git</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">GitHub</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">Service</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -909,11 +913,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Python</a>
+                <a href="javascript:void(0)" class="js-tag color1">Prometheus</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Prometheus</a>
+                <a href="javascript:void(0)" class="js-tag color2">Python</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -938,10 +942,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">Zookeeper</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">HA</a>
               </li>
             
             <div class="clearfix"></div>

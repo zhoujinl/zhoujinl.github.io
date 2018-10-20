@@ -27,15 +27,13 @@
 <meta property="og:image" content="http://zhoujinl.github.io/2018/10/20/docker-swarm-scheduler/storage-driver.png">
 <meta property="og:image" content="http://zhoujinl.github.io/2018/10/20/docker-swarm-scheduler/storage_backfing.png">
 <meta property="og:image" content="http://zhoujinl.github.io/2018/10/20/docker-swarm-scheduler/Chart_Multi-Host-Persistence-Shared-Among-Containers.png">
-<meta property="og:image" content="http://zhoujinl.github.io/2018/10/20/docker-swarm-scheduler/storage-provider-1.png">
-<meta property="og:image" content="http://zhoujinl.github.io/2018/10/20/docker-swarm-scheduler/storage-provider-2.png">
-<meta property="og:image" content="http://zhoujinl.github.io/2018/10/20/docker-swarm-scheduler/Docker-Volume-Plugin-Architecture.png">
+<meta property="og:image" content="http://zhoujinl.github.io/img/Docker-Volume-Plugin-Architecture.png">
 <meta property="og:image" content="http://zhoujinl.github.io/img/services-diagram.png">
 <meta property="og:image" content="http://zhoujinl.github.io/img/swarm-service-lifecycle.png">
 <meta property="og:image" content="http://zhoujinl.github.io/img/docker-swarm-replicated-vs-global.png">
 <meta property="og:image" content="http://zhoujinl.github.io/img/swarm-web.png">
 <meta property="og:image" content="http://zhoujinl.github.io/2018/10/20/docker-swarm-scheduler/healthcheck.png">
-<meta property="og:updated_time" content="2018-10-20T08:51:20.670Z">
+<meta property="og:updated_time" content="2018-10-20T08:53:59.240Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Docker Swarm服务调度分析">
 <meta name="twitter:description" content="本文主要介绍docker swarm 对于容器应用的调度管理分析。Docker swarm 1.12.0  是一个非常重要的版本，1.12.0之前的版本 docker swarm 是一个独立的项目，需要额外下载swarm镜像进行安装。1.12.0  之后的版本，swarm功能直接继承到docker engine 当中。直接使用docker CLI 可创建一个swarm 集群、可在swarm 集群中">
@@ -439,15 +437,9 @@
 <p><img src=".\Chart_Multi-Host-Persistence-Shared-Among-Containers.png" alt=""></p>
 <p>在运行Docker容器的每个主机上配置分布式文件系统。通过创建一致的命名约定和统一命名空间，所有正在运行的容器都可以访问底层的共享存储后端。共享文件系统存储方案利用分布式文件系统与显式存储技术相结合。由于挂载点在所有节点上都可用，因此可以利用它在容器之间创建共享挂载点。这种方案其实是属于选项二的一种变种。</p>
 <p>尽管该方案对于特定用例而言，是Docker 存储方案的一个有价值的补充，但它具有限制容器到特定主机的可移植性的显着缺点。它也没有利用针对数据密集型工作负载优化的专用存储后端。为了解决这些限制，volume plugins 被添加到Docker中，将容器的功能扩展到各种存储后端，并且而无需强制更改应用程序设计或部署体系结构。 这就是我们下节将详细介绍的 Volume Driver。</p>
-<h2 id="3-3-Volume-Driver"><a href="#3-3-Volume-Driver" class="headerlink" title="3.3 Volume Driver"></a>3.3 Volume Driver</h2><p>假设有两个 Dokcer 主机，Host1 运行了一个 MySQL 容器，为了保护数据，data volume 由 storage provider 提供，如下图所示。 </p>
-<p><img src=".\storage-provider-1.png" alt=""></p>
-<p>当 Host1 发生故障，我们会在 Host2 上启动相同的 MySQL 镜像，并挂载 data volume。 </p>
-<p><img src=".\storage-provider-2.png" alt=""></p>
-<p>Docker 是如何实现这个跨主机管理 data volume 方案的呢？</p>
-<p><strong>答案是 volume driver。</strong></p>
-<p>利用 Docker 的 volume driver，由外部 storage provider 管理和提供 volume，所有 Docker 主机 volume 将挂载到各个副本。任何一个 data volume 都是由 driver 管理的，创建 volume 时如果不特别指定，将使用 <code>local</code> 类型的 driver，即从 Docker Host 的本地目录中分配存储空间。如果要支持跨主机的 volume，则需要使用第三方 driver。</p>
+<h2 id="3-3-Volume-Driver"><a href="#3-3-Volume-Driver" class="headerlink" title="3.3 Volume Driver"></a>3.3 Volume Driver</h2><p>利用 Docker 的 volume driver，可以实现跨主机的存储方案。由外部 storage provider 管理和提供 volume，所有 Docker 主机 volume 将挂载到各个副本。任何一个 data volume 都是由 driver 管理的，创建 volume 时如果不特别指定，将使用 <code>local</code> 类型的 driver，即从 Docker Host 的本地目录中分配存储空间。如果要支持跨主机的 volume，则需要使用第三方 driver。</p>
 <p>目前已经有很多可用的 driver，比如使用 Azure File Storage 的 driver，使用 GlusterFS 的 driver，完整的列表可参考 <a href="https://docs.docker.com/engine/extend/legacy_plugins/#volume-plugins" target="_blank" rel="noopener">https://docs.docker.com/engine/extend/legacy_plugins/#volume-plugins</a> </p>
-<p><img src=".\Docker-Volume-Plugin-Architecture.png" alt=""></p>
+<p><img src="\img\Docker-Volume-Plugin-Architecture.png" alt=""></p>
 <p>Volume drivers 让我们将应用程序与底层存储系统隔离。例如，如果原先服务使用一个 NFS驱动器，现在可以在不改变应用程序的逻辑下，直接更新服务使用不同的驱动程序，例如将数据存储在云端,。 </p>
 <p>通过<code>docker volume create</code> 命令可以直接创建volume，同时在参数中指定driver 类型。    下面的例子使用vieux/sshfs  这种类型的Volume drivers。首先创建一个单独的 volume，然后创建容器引用该volume。</p>
 <h3 id="3-3-1-安装driver插件"><a href="#3-3-1-安装driver插件" class="headerlink" title="3.3.1 安装driver插件"></a>3.3.1 安装driver插件</h3><p>这个示例假设有两个节点，两个节点直接可以通过ssh互相连接。在Docker 主机上，安装<code>vieux/sshfs</code> 插件。</p>
@@ -960,19 +952,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Google</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">随笔</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">Docker Swarm</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">Service</a>
+                <a href="javascript:void(0)" class="js-tag color2">Google</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -984,11 +968,23 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">Docker Swarm</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">HA</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Git</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">GitHub</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">Service</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1008,11 +1004,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Python</a>
+                <a href="javascript:void(0)" class="js-tag color1">Prometheus</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Prometheus</a>
+                <a href="javascript:void(0)" class="js-tag color2">Python</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1037,10 +1033,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">Zookeeper</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">HA</a>
               </li>
             
             <div class="clearfix"></div>
